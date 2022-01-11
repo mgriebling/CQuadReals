@@ -72,7 +72,7 @@ typedef struct {
 
 /*********** Additions ************/
 /* double-double = double + double */
-inline dd_real dd_add(double a, double b) {
+static inline dd_real dd_add(double a, double b) {
     double s, e;
     s = two_sum(a, b, &e);
     dd_real x = {s, e};
@@ -80,7 +80,7 @@ inline dd_real dd_add(double a, double b) {
 }
 
 /* double-double + double */
-inline dd_real dd_addd(const dd_real *a, double b) {
+static inline dd_real dd_addd(const dd_real *a, double b) {
     double s1, s2;
     s1 = two_sum(a->x[0], b, &s2);
     s2 += a->x[1];
@@ -90,7 +90,7 @@ inline dd_real dd_addd(const dd_real *a, double b) {
 }
 
 /* double-double + double-double */
-inline dd_real dd_ieee_add(const dd_real *a, const dd_real *b) {
+static inline dd_real dd_ieee_add(const dd_real *a, const dd_real *b) {
     /* This one satisfies IEEE style error bound,
      due to K. Briggs and W. Kahan.                   */
     double s1, s2, t1, t2;
@@ -105,7 +105,7 @@ inline dd_real dd_ieee_add(const dd_real *a, const dd_real *b) {
     return x;
 }
 
-inline dd_real dd_sloppy_add(const dd_real *a, const dd_real *b) {
+static inline dd_real dd_sloppy_add(const dd_real *a, const dd_real *b) {
     /* This is the less accurate version ... obeys Cray-style
      error bound. */
     double s, e;
@@ -171,7 +171,7 @@ inline dd_real dd_sloppy_add(const dd_real *a, const dd_real *b) {
 //    return x;
 //}
 
-inline dd_real dd_sqrd(double a) {
+static inline dd_real dd_sqrd(double a) {
     double p1, p2;
     p1 = two_sqr(a, &p2);
     dd_real res = {p1, p2};
@@ -179,7 +179,7 @@ inline dd_real dd_sqrd(double a) {
 }
 
 /*********** Squaring **********/
-inline dd_real dd_sqr(const dd_real *a) {
+static inline dd_real dd_sqr(const dd_real *a) {
     double p1, p2;
     double s1, s2;
     p1 = two_sqr(a->x[0], &p2);
@@ -192,7 +192,7 @@ inline dd_real dd_sqr(const dd_real *a) {
 
 /*********** Subtractions ************/
 /* double-double = double - double */
-inline dd_real dd_sub(double a, double b) {
+static inline dd_real dd_sub(double a, double b) {
     double s, e;
     s = two_diff(a, b, &e);
     dd_real x = {s, e};
@@ -200,7 +200,7 @@ inline dd_real dd_sub(double a, double b) {
 }
 
 /* double-double - double */
-inline dd_real dd_subd(const dd_real *a, double b) {
+static inline dd_real dd_subd(const dd_real *a, double b) {
     double s1, s2;
     s1 = two_diff(a->x[0], b, &s2);
     s2 += a->x[1];
@@ -211,7 +211,7 @@ inline dd_real dd_subd(const dd_real *a, double b) {
 
 /* double-double - double-double */
 /* double-double + double-double */
-inline dd_real dd_ieee_sub(const dd_real *a, const dd_real *b) {
+static inline dd_real dd_ieee_sub(const dd_real *a, const dd_real *b) {
     double s1, s2, t1, t2;
     s1 = two_diff(a->x[0], b->x[0], &s2);
     t1 = two_diff(a->x[1], b->x[1], &t2);
@@ -223,7 +223,7 @@ inline dd_real dd_ieee_sub(const dd_real *a, const dd_real *b) {
     return x;
 }
 
-inline dd_real dd_sloppy_sub(const dd_real *a, const dd_real *b) {
+static inline dd_real dd_sloppy_sub(const dd_real *a, const dd_real *b) {
     double s, e;
     s = two_diff(a->x[0], b->x[0], &e);
     e += a->x[1];
@@ -234,7 +234,7 @@ inline dd_real dd_sloppy_sub(const dd_real *a, const dd_real *b) {
 }
 
 /* double - double-double */
-inline dd_real dd_subd2(double a, const dd_real *b) {
+static inline dd_real dd_subd2(double a, const dd_real *b) {
     double s1, s2;
     s1 = two_diff(a, b->x[0], &s2);
     s2 -= b->x[1];
@@ -254,7 +254,7 @@ inline dd_real dd_subd2(double a, const dd_real *b) {
 //}
 //
 ///* double-double -= double-double */
-inline void minusEqual(dd_real *x, const dd_real *a) {
+static inline void minusEqual(dd_real *x, const dd_real *a) {
   double s1, s2, t1, t2;
   s1 = two_diff(x->x[0], a->x[0], &s2);
   t1 = two_diff(x->x[1], a->x[1], &t2);
@@ -265,13 +265,13 @@ inline void minusEqual(dd_real *x, const dd_real *a) {
 }
 
 /*********** Unary Minus ***********/
-//inline dd_real dd_operator-() const {
+//static inline dd_real dd_operator-() const {
 //  return dd_real(-x[0], -x[1]);
 //}
 
 /*********** Multiplications ************/
 /* double-double = double * double */
-inline dd_real dd_mul(double a, double b) {
+static inline dd_real dd_mul(double a, double b) {
     double p, e;
     p = two_prod(a, b, &e);
     dd_real x = {p, e};
@@ -289,7 +289,7 @@ inline dd_real dd_mul(double a, double b) {
 //}
 
 /* double-double * double */
-inline dd_real dd_muld(const dd_real *a, double b) {
+static inline dd_real dd_muld(const dd_real *a, double b) {
     double p1, p2;
     
     p1 = two_prod(a->x[0], b, &p2);
@@ -300,7 +300,7 @@ inline dd_real dd_muld(const dd_real *a, double b) {
 }
 
 /* double-double * double-double */
-inline dd_real dd_muldd(const dd_real *a, const dd_real *b) {
+static inline dd_real dd_muldd(const dd_real *a, const dd_real *b) {
     double p1, p2;
     
     p1 = two_prod(a->x[0], b->x[0], &p2);
@@ -336,7 +336,7 @@ inline dd_real dd_muldd(const dd_real *a, const dd_real *b) {
 //}
 
 /*********** Divisions ************/
-inline dd_real dd_div(double a, double b) {
+static inline dd_real dd_div(double a, double b) {
     double q1, q2;
     double p1, p2;
     double s, e;
@@ -358,7 +358,7 @@ inline dd_real dd_div(double a, double b) {
 }
 
 /* double-double / double */
-inline dd_real dd_divd(const dd_real *a, double b) {
+static inline dd_real dd_divd(const dd_real *a, double b) {
 
   double q1, q2;
   double p1, p2;
@@ -382,7 +382,7 @@ inline dd_real dd_divd(const dd_real *a, double b) {
   return r;
 }
 
-inline dd_real dd_sloppy_div(const dd_real *a, const dd_real *b) {
+static inline dd_real dd_sloppy_div(const dd_real *a, const dd_real *b) {
     double s1, s2;
     double q1, q2;
     dd_real r;
@@ -404,7 +404,7 @@ inline dd_real dd_sloppy_div(const dd_real *a, const dd_real *b) {
     return r;
 }
 
-inline dd_real dd_accurate_div(const dd_real *a, const dd_real *b) {
+static inline dd_real dd_accurate_div(const dd_real *a, const dd_real *b) {
     double q1, q2, q3;
     dd_real r;
     

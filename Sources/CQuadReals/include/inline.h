@@ -33,21 +33,21 @@
 
 /*********** Basic Functions ************/
 /* Computes fl(a+b) and err(a+b).  Assumes |a| >= |b|. */
-inline double quick_two_sum(double a, double b, double *err) {
+static inline double quick_two_sum(double a, double b, double *err) {
   double s = a + b;
   *err = b - (s - a);
   return s;
 }
 
 /* Computes fl(a-b) and err(a-b).  Assumes |a| >= |b| */
-inline double quick_two_diff(double a, double b, double *err) {
+static inline double quick_two_diff(double a, double b, double *err) {
   double s = a - b;
   *err = (a - s) - b;
   return s;
 }
 
 /* Computes fl(a+b) and err(a+b).  */
-inline double two_sum(double a, double b, double *err) {
+static inline double two_sum(double a, double b, double *err) {
   double s = a + b;
   double bb = s - a;
   *err = (a - (s - bb)) + (b - bb);
@@ -55,7 +55,7 @@ inline double two_sum(double a, double b, double *err) {
 }
 
 /* Computes fl(a-b) and err(a-b).  */
-inline double two_diff(double a, double b, double *err) {
+static inline double two_diff(double a, double b, double *err) {
   double s = a - b;
   double bb = s - a;
   *err = (a - (s - bb)) - (b + bb);
@@ -63,7 +63,7 @@ inline double two_diff(double a, double b, double *err) {
 }
 
 /* Computes high word and lo word of a */
-inline void split(double a, double *hi, double *lo) {
+static inline void split(double a, double *hi, double *lo) {
   double temp;
   if (a > _QD_SPLIT_THRESH || a < -_QD_SPLIT_THRESH) {
     a = a * 3.7252902984619140625e-09;  // 2^-28
@@ -80,7 +80,7 @@ inline void split(double a, double *hi, double *lo) {
 }
 
 /* Computes fl(a*b) and err(a*b). */
-inline double two_prod(double a, double b, double *err) {
+static inline double two_prod(double a, double b, double *err) {
 //#ifdef QD_FMS
 //  double p = a * b;
 //  *err = QD_FMS(a, b, p);
@@ -96,7 +96,7 @@ inline double two_prod(double a, double b, double *err) {
 }
 
 /* Computes fl(a*a) and err(a*a).  Faster than the above method. */
-inline double two_sqr(double a, double *err) {
+static inline double two_sqr(double a, double *err) {
 //#ifdef QD_FMS
 //  double p = a * a;
 //  err = QD_FMS(a, a, p);

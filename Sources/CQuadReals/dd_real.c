@@ -39,27 +39,27 @@
 //using std::string;
 //using std::setw;
 
-bool dd_is_zero(const dd_real *a) {
+static bool dd_is_zero(const dd_real *a) {
   return (a->x[0] == 0.0);
 }
 
 /*  this == 1 */
-bool dd_is_one(const dd_real *a) {
+static bool dd_is_one(const dd_real *a) {
   return (a->x[0] == 1.0 && a->x[1] == 0.0);
 }
 
 /*  this > 0 */
-bool dd_is_positive(const dd_real *a) {
+static bool dd_is_positive(const dd_real *a) {
   return (a->x[0] > 0.0);
 }
 
 /* this < 0 */
-bool dd_is_negative(const dd_real *a) {
+static bool dd_is_negative(const dd_real *a) {
   return (a->x[0] < 0.0);
 }
 
 /* This routine is called whenever a fatal error occurs. */
-void dd_error(const char *msg) {
+static void dd_error(const char *msg) {
   // if (msg) { cerr << "ERROR " << msg << endl; }
 }
 
