@@ -65,7 +65,7 @@ typedef struct QD_API qd_real {
   static const qd_real qd_safe_max;
   static const int qd_ndigits;
 
-inline void qd_quick_renorm(double *c0, double *c1, double *c2, double *c3, double *c4) {
+static inline void qd_quick_renorm(double *c0, double *c1, double *c2, double *c3, double *c4) {
   double t0, t1, t2, t3;
   double s;
   s  = quick_two_sum(*c3, *c4, &t3);
@@ -83,7 +83,7 @@ inline void qd_quick_renorm(double *c0, double *c1, double *c2, double *c3, doub
   *c3 = t0 + t1;
 }
 
-inline void qd_renorm(double *c0, double *c1, double *c2, double *c3) {
+static inline void qd_renorm(double *c0, double *c1, double *c2, double *c3) {
   double s0, s1, s2 = 0.0, s3 = 0.0;
 
 //  if (QD_ISINF(c0)) return;
@@ -114,7 +114,7 @@ inline void qd_renorm(double *c0, double *c1, double *c2, double *c3) {
   *c3 = s3;
 }
 
-inline void qd_renorm2(double *c0, double *c1, double *c2, double *c3, double *c4) {
+static inline void qd_renorm2(double *c0, double *c1, double *c2, double *c3, double *c4) {
   double s0, s1, s2 = 0.0, s3 = 0.0;
 
 //  if (QD_ISINF(c0)) return;
@@ -178,14 +178,14 @@ inline void qd_renorm2(double *c0, double *c1, double *c2, double *c3, double *c
 /********** Additions ************/
 //namespace qd {
 
-inline void three_sum(double *a, double *b, double *c) {
+static inline void three_sum(double *a, double *b, double *c) {
     double t1, t2, t3;
     t1 = two_sum(*a, *b, &t2);
     *a  = two_sum(*c, t1, &t3);
     *b  = two_sum(t2, t3, c);
 }
 
-inline void three_sum2(double *a, double *b, double *c) {
+static inline void three_sum2(double *a, double *b, double *c) {
     double t1, t2, t3;
     t1 = two_sum(*a, *b, &t2);
     *a  = two_sum(*c, t1, &t3);
@@ -195,7 +195,7 @@ inline void three_sum2(double *a, double *b, double *c) {
 //}
 
 /* quad-double + double */
-inline qd_real qd_addd (const qd_real *a, double b) {
+static inline qd_real qd_addd (const qd_real *a, double b) {
     double c0, c1, c2, c3;
     double e;
     
@@ -211,7 +211,7 @@ inline qd_real qd_addd (const qd_real *a, double b) {
 }
 
 /* quad-double + double-double */
-inline qd_real qd_add (const qd_real *a, const dd_real *b) {
+static inline qd_real qd_add (const qd_real *a, const dd_real *b) {
     
     double s0, s1, s2, s3;
     double t0, t1;
@@ -249,7 +249,7 @@ inline qd_real qd_add (const qd_real *a, const dd_real *b) {
  * If the result does not fit in two doubles, then the sum is
  * output into s and (a,b) contains the remainder.  Otherwise
  * s is zero and (a,b) contains the sum. */
-inline double quick_three_accum(double *a, double *b, double c) {
+static inline double quick_three_accum(double *a, double *b, double c) {
     double s;
     bool za, zb;
     
@@ -274,7 +274,7 @@ inline double quick_three_accum(double *a, double *b, double c) {
 
 //}
 
-inline qd_real qd_ieee_add(const qd_real *a, const qd_real *b) {
+static inline qd_real qd_ieee_add(const qd_real *a, const qd_real *b) {
     int i, j, k;
     double s, t;
     double u, v;   /* double-length accumulator */
@@ -327,7 +327,7 @@ inline qd_real qd_ieee_add(const qd_real *a, const qd_real *b) {
     return s2;
 }
 
-inline qd_real qd_sloppy_add(const qd_real *a, const qd_real *b) {
+static inline qd_real qd_sloppy_add(const qd_real *a, const qd_real *b) {
     /*
      double s0, s1, s2, s3;
      double t0, t1, t2, t3;
@@ -428,7 +428,7 @@ inline qd_real qd_sloppy_add(const qd_real *a, const qd_real *b) {
 //}
 //
 ///********** Unary Minus **********/
-inline qd_real qd_negate(const qd_real *a) {
+static inline qd_real qd_negate(const qd_real *a) {
     qd_real b = {-a->x[0], -a->x[1], -a->x[2], -a->x[3]};
     return b;
 }
@@ -481,7 +481,7 @@ inline qd_real qd_negate(const qd_real *a) {
 //}
 
 /********** Multiplications **********/
-inline qd_real qd_muldd(const qd_real *a, double b) {
+static inline qd_real qd_muldd(const qd_real *a, double b) {
     double p0, p1, p2, p3;
     double q0, q1, q2;
     double s0, s1, s2, s3, s4;
@@ -516,7 +516,7 @@ inline qd_real qd_muldd(const qd_real *a, double b) {
                   a2 * b1         5
                   a3 * b0         6
                        a3 * b1    7 */
-inline qd_real qd_mul (const qd_real *a, const dd_real *b) {
+static inline qd_real qd_mul (const qd_real *a, const dd_real *b) {
     double p0, p1, p2, p3, p4;
     double q0, q1, q2, q3, q4;
     double s0, s1, s2;
@@ -559,7 +559,7 @@ inline qd_real qd_mul (const qd_real *a, const dd_real *b) {
                   a1 * b2     7
                   a2 * b1     8
                   a3 * b0     9  */
-inline qd_real qd_sloppy_mul(const qd_real *a, const qd_real *b) {
+static inline qd_real qd_sloppy_mul(const qd_real *a, const qd_real *b) {
     double p0, p1, p2, p3, p4, p5;
     double q0, q1, q2, q3, q4, q5;
     double t0, t1;
@@ -594,7 +594,7 @@ inline qd_real qd_sloppy_mul(const qd_real *a, const qd_real *b) {
     return p;
 }
 
-inline qd_real qd_accurate_mul(const qd_real *a, const qd_real *b) {
+static inline qd_real qd_accurate_mul(const qd_real *a, const qd_real *b) {
     double p0, p1, p2, p3, p4, p5;
     double q0, q1, q2, q3, q4, q5;
     double p6, p7, p8, p9;
@@ -668,7 +668,7 @@ inline qd_real qd_accurate_mul(const qd_real *a, const qd_real *b) {
 /* quad-double ^ 2  = (x0 + x1 + x2 + x3) ^ 2
                     = x0 ^ 2 + 2 x0 * x1 + (2 x0 * x2 + x1 ^ 2)
                                + (2 x0 * x3 + 2 x1 * x2)           */
-inline qd_real qd_sqr(const qd_real *a) {
+static inline qd_real qd_sqr(const qd_real *a) {
     double p0, p1, p2, p3, p4, p5;
     double q0, q1, q2, q3;
     double s0, s1;
@@ -711,7 +711,7 @@ inline qd_real qd_sqr(const qd_real *a) {
     return p;
 }
 
-inline qd_real qd_sloppy_subMul(const qd_real *r, const double a, const qd_real *b) {
+static inline qd_real qd_sloppy_subMul(const qd_real *r, const double a, const qd_real *b) {
     // r = r - (a * b);
     qd_real t = qd_muldd(b, a);
     t = qd_negate(&t);
@@ -720,7 +720,7 @@ inline qd_real qd_sloppy_subMul(const qd_real *r, const double a, const qd_real 
 
 /* Divisions */
 /* quad-double / double-double */
-inline qd_real qd_sloppy_divd(const qd_real *a, const dd_real *b) {
+static inline qd_real qd_sloppy_divd(const qd_real *a, const dd_real *b) {
     double q0, q1, q2, q3;
     qd_real r;
     qd_real qd_b = { b->x[0], b->x[1], 0, 0 };
@@ -748,7 +748,7 @@ inline qd_real qd_sloppy_divd(const qd_real *a, const dd_real *b) {
     return q;
 }
 
-inline qd_real qd_accurate_divd(const qd_real *a, const dd_real *b) {
+static inline qd_real qd_accurate_divd(const qd_real *a, const dd_real *b) {
     double q0, q1, q2, q3, q4;
     qd_real r;
     qd_real qd_b = { b->x[0], b->x[1], 0, 0 };
@@ -777,7 +777,7 @@ inline qd_real qd_accurate_divd(const qd_real *a, const dd_real *b) {
 }
 
 /* quad-double / quad-double */
-inline qd_real qd_sloppy_div(const qd_real *a, const qd_real *b) {
+static inline qd_real qd_sloppy_div(const qd_real *a, const qd_real *b) {
     double q0, q1, q2, q3;
     qd_real r;
     
@@ -801,7 +801,7 @@ inline qd_real qd_sloppy_div(const qd_real *a, const qd_real *b) {
     return q;
 }
 
-inline qd_real qd_accurate_div(const qd_real *a, const qd_real *b) {
+static inline qd_real qd_accurate_div(const qd_real *a, const qd_real *b) {
     double q0, q1, q2, q3;
     
     qd_real r;
@@ -1091,19 +1091,19 @@ inline qd_real qd_accurate_div(const qd_real *a, const qd_real *b) {
 //  return (a[0] >= 0) ? floor(a) : ceil(a);
 //}
 //
-inline bool qd_is_zero(const qd_real *a) {
+static inline bool qd_is_zero(const qd_real *a) {
   return (a->x[0] == 0.0);
 }
 
-inline bool qd_is_one(const qd_real *a) {
+static inline bool qd_is_one(const qd_real *a) {
   return (a->x[0] == 1.0 && a->x[1] == 0.0 && a->x[2] == 0.0 && a->x[3] == 0.0);
 }
 
-inline bool qd_is_positive(const qd_real *a) {
+static inline bool qd_is_positive(const qd_real *a) {
   return (a->x[0] > 0.0);
 }
 
-inline bool qd_is_negative(const qd_real *a) {
+static inline bool qd_is_negative(const qd_real *a) {
   return (a->x[0] < 0.0);
 }
 
