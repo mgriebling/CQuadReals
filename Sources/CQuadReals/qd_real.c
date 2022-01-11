@@ -20,13 +20,13 @@
 
 #include "config.h"
 #include "qd_real.h"
-#include "util.h"
+//#include "util.h"
 
 //#include "bits.h"
 
-#ifndef QD_INLINE
-#include "qd_inline.h"
-#endif
+//#ifndef QD_INLINE
+//#include "qd_inline.h"
+//#endif
 
 //#include "qd_const.c"
 

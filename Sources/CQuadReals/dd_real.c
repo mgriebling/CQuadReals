@@ -22,13 +22,13 @@
 
 #include "config.h"
 #include "dd_real.h"
-#include "util.h"
+//#include "util.h"
 
 //#include <qd/bits.h>
 
-#ifndef QD_INLINE
-#include "dd_inline.h"
-#endif
+//#ifndef QD_INLINE
+//#include "dd_inline.h"
+//#endif
 
 //using std::cout;
 //using std::cerr;

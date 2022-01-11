@@ -29,6 +29,7 @@
 #include <math.h>
 #include "qd_config.h"
 #include "dd_real.h"
+//#include "inline.h"
 
 typedef struct QD_API qd_real {
   double x[4];    /* The Components. */
