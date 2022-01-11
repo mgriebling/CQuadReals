@@ -711,6 +711,124 @@ inline qd_real qd_sqr(const qd_real *a) {
     return p;
 }
 
+inline qd_real qd_sloppy_subMul(const qd_real *r, const double a, const qd_real *b) {
+    // r = r - (a * b);
+    qd_real t = qd_muldd(b, a);
+    t = qd_negate(&t);
+    return qd_sloppy_add(r, &t);
+}
+
+/* Divisions */
+/* quad-double / double-double */
+inline qd_real qd_sloppy_divd(const qd_real *a, const dd_real *b) {
+    double q0, q1, q2, q3;
+    qd_real r;
+    qd_real qd_b = { b->x[0], b->x[1], 0, 0 };
+    
+    q0 = a->x[0] / b->x[0];
+//    r = qd_muldd(&qd_b, q0);
+//    r = qd_negate(&r);
+//    r = qd_sloppy_add(a, &r);
+    r = qd_sloppy_subMul(&r, q0, &qd_b);
+    //    r = a - r;
+    
+    q1 = r.x[0] / b->x[0];
+//    qd_real t = qd_muldd(&qd_b, q1);
+//    t = qd_negate(&t);
+    r = qd_sloppy_subMul(&r, q1, &qd_b);  // qd_sloppy_add(&r, &t);
+    
+    q2 = r.x[0] / b->x[0];
+    //r -= (q2 * qd_b);
+    r = qd_sloppy_subMul(&r, q2, &qd_b);
+    
+    q3 = r.x[0] / b->x[0];
+    
+    qd_renorm(&q0, &q1, &q2, &q3);
+    qd_real q = {q0, q1, q2, q3};
+    return q;
+}
+
+inline qd_real qd_accurate_divd(const qd_real *a, const dd_real *b) {
+    double q0, q1, q2, q3, q4;
+    qd_real r;
+    qd_real qd_b = { b->x[0], b->x[1], 0, 0 };
+    
+    q0 = a->x[0] / b->x[0];
+    //r = a - q0 * qd_b;
+    r = qd_sloppy_subMul(a, q0, &qd_b);
+    
+    q1 = r.x[0] / b->x[0];
+    // r -= (q1 * qd_b);
+    r = qd_sloppy_subMul(&r, q1, &qd_b);
+    
+    q2 = r.x[0] / b->x[0];
+    // r -= (q2 * qd_b);
+    r = qd_sloppy_subMul(&r, q2, &qd_b);
+    
+    q3 = r.x[0] / b->x[0];
+    // r -= (q3 * qd_b);
+    r = qd_sloppy_subMul(&r, q3, &qd_b);
+    
+    q4 = r.x[0] / b->x[0];
+    
+    qd_renorm2(&q0, &q1, &q2, &q3, &q4);
+    qd_real q = {q0, q1, q2, q3};
+    return q;
+}
+
+/* quad-double / quad-double */
+inline qd_real qd_sloppy_div(const qd_real *a, const qd_real *b) {
+    double q0, q1, q2, q3;
+    qd_real r;
+    
+    q0 = a->x[0] / b->x[0];
+    //r = a - (b * q0);
+    r = qd_sloppy_subMul(a, q0, b);
+    
+    q1 = r.x[0] / b->x[0];
+    //r -= (b * q1);
+    r = qd_sloppy_subMul(&r, q1, b);
+    
+    q2 = r.x[0] / b->x[0];
+    //r -= (b * q2);
+    r = qd_sloppy_subMul(&r, q2, b);
+    
+    q3 = r.x[0] / b->x[0];
+    
+    qd_renorm(&q0, &q1, &q2, &q3);
+    
+    qd_real q = {q0, q1, q2, q3};
+    return q;
+}
+
+inline qd_real qd_accurate_div(const qd_real *a, const qd_real *b) {
+    double q0, q1, q2, q3;
+    
+    qd_real r;
+    
+    q0 = a->x[0] / b->x[0];
+    //r = a - (b * q0);
+    r = qd_sloppy_subMul(a, q0, b);
+    
+    q1 = r.x[0] / b->x[0];
+    //r -= (b * q1);
+    r = qd_sloppy_subMul(&r, q1, b);
+    
+    q2 = r.x[0] / b->x[0];
+    //r -= (b * q2);
+    r = qd_sloppy_subMul(&r, q2, b);
+    
+    q3 = r.x[0] / b->x[0];
+    
+    //r -= (b * q3);
+    r = qd_sloppy_subMul(&r, q3, b);
+    double q4 = r.x[0] / b->x[0];
+    
+    qd_renorm2(&q0, &q1, &q2, &q3, &q4);
+    qd_real q = {q0, q1, q2, q3};
+    return q;
+}
+
 ///********** Self-Multiplication **********/
 ///* quad-double *= double */
 //inline qd_real &qd_operator*=(double a) {
